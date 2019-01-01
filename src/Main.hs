@@ -9,6 +9,7 @@ import Network.URI ( parseURI )
 import Data.ByteString.Lazy  ( ByteString )
 import Data.Text.Lazy.Encoding
 import Text.HTML.TagSoup
+import Contribution
 import qualified Data.Text.Lazy as T
 import qualified Parser
 
@@ -24,7 +25,7 @@ sendRequest =
 
 fetched :: Response ByteString -> IO ()
 fetched response =
-    putStrLn $ unwords parsed
+    putStrLn $ unwords $ map ( \x -> date x ) parsed
     where
         resp = responseBody response
         tags = parseTags $ T.unpack $ decodeUtf8 resp

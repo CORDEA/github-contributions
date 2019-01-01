@@ -17,10 +17,16 @@
 module Parser where
 
 import Text.HTML.TagSoup
+import Contribution
 
-parse :: [Tag String] -> [String]
+parse :: [Tag String] -> [Contribution]
 parse tags =
     map (extract . takeWhile (~/= "</>")) . sections (~== "<rect>") $ tags
     where
-        extract :: [Tag String] -> String
-        extract tags = fromAttrib "data-count" $ tags !! 0
+        toContribution :: Tag String -> Contribution
+        toContribution tags = Contribution {
+            date = ( fromAttrib "data-date" tags ),
+            commits = ( read $ fromAttrib "data-count" tags )
+            }
+        extract :: [Tag String] -> Contribution
+        extract tags = toContribution $ tags !! 0

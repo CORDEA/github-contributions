@@ -17,7 +17,7 @@ cabal-version:       >=1.10
 
 executable github-contributions
   main-is:             Main.hs
-  -- other-modules:       
+  other-modules:       HTMLParser, Contribution
   -- other-extensions:    
   build-depends:       base >=4.10 && <4.11, HTTP, http-conduit, http-types, network-uri, text, bytestring, tagsoup, optparse-applicative
   hs-source-dirs:      src

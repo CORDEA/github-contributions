@@ -25,7 +25,7 @@ sendRequest =
 
 fetched :: Response ByteString -> IO ()
 fetched response =
-    putStrLn $ unwords $ map ( \x -> date x ) parsed
+    putStrLn $ unlines $ map ( forOutput ) parsed
     where
         resp = responseBody response
         tags = parseTags $ T.unpack $ decodeUtf8 resp

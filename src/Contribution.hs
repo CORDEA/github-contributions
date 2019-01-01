@@ -20,3 +20,10 @@ data Contribution = Contribution {
     date :: String,
     commits :: Int
     } deriving Show
+
+forOutput :: Contribution -> String
+forOutput cont =
+    d ++ " " ++ c
+    where
+        d = date cont
+        c = show $ commits cont

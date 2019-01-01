@@ -16,7 +16,10 @@ import qualified Data.Text.Lazy as T
 import qualified HTMLParser
 
 url :: String
-url = "https://github.com/users/CORDEA/contributions"
+url = "https://github.com/users/"
+
+contributionsPath :: String
+contributionsPath = "/contributions"
 
 data Args = Args {
     user :: String,
@@ -38,12 +41,16 @@ parser :: ParserInfo Args
 parser = info commandParser
     ( progDesc "Contribution Command" )
 
-sendRequest :: IO ( Response ByteString )
-sendRequest =
+buildUrl :: Args -> String
+buildUrl ( Args user date ) =
+    url ++ user ++ contributionsPath ++ "?to=" ++ date
+
+sendRequest :: Args -> IO ( Response ByteString )
+sendRequest args =
     newManager tlsManagerSettings >>= \m ->
         httpLbs req { method = "GET" } m
     where
-        Just req = parseUrlThrow url
+        Just req = parseUrlThrow $ buildUrl args
 
 fetched :: Response ByteString -> IO ()
 fetched response =
@@ -52,9 +59,9 @@ fetched response =
         resp = responseBody response
         tags = parseTags $ T.unpack $ decodeUtf8 resp
         parsed = HTMLParser.parse tags
--- fetched =<< sendRequest
+
 parsed :: Args -> IO ()
-parsed ( Args user date ) = putStrLn user
+parsed args = fetched =<< sendRequest args
 
 main :: IO ()
 main = parsed =<< execParser parser

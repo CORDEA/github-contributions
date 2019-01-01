@@ -35,15 +35,20 @@ commandParser = Args
     <*> strOption
         ( long "date"
         <> short 'd'
-        <> help "Date" )
+        <> help "Date"
+        <> value "" )
 
 parser :: ParserInfo Args
 parser = info commandParser
     ( progDesc "Contribution Command" )
 
+toQuery :: String -> String
+toQuery [] = ""
+toQuery query = "?to=" ++ query
+
 buildUrl :: Args -> String
 buildUrl ( Args user date ) =
-    url ++ user ++ contributionsPath ++ "?to=" ++ date
+    url ++ user ++ contributionsPath ++ toQuery date
 
 sendRequest :: Args -> IO ( Response ByteString )
 sendRequest args =

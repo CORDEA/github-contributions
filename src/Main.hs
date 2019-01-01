@@ -11,7 +11,7 @@ import Data.Text.Lazy.Encoding
 import Text.HTML.TagSoup
 import Contribution
 import qualified Data.Text.Lazy as T
-import qualified Parser
+import qualified HTMLParser
 
 url :: String
 url = "https://github.com/users/CORDEA/contributions"
@@ -29,7 +29,7 @@ fetched response =
     where
         resp = responseBody response
         tags = parseTags $ T.unpack $ decodeUtf8 resp
-        parsed = Parser.parse tags
+        parsed = HTMLParser.parse tags
 
 main :: IO ()
 main = fetched =<< sendRequest

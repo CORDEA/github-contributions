@@ -14,7 +14,7 @@
 -- Author: Yoshihiro Tanaka <contact@cordea.jp>
 -- date  : 2019-01-01
 
-module Parser where
+module HTMLParser where
 
 import Text.HTML.TagSoup
 import Contribution
